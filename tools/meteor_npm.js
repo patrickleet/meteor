@@ -35,10 +35,6 @@ _.extend(exports, {
     return /^https:\/\/github(\..*)?.com\/.*\/tarball\/[0-9a-f]{40}/.test(x);
   },
 
-  _isValidURI: function (x) {
-    return /^(http|https):\/\/.*/.test(x);
-  },
-
   // If there is a version that isn't exact, throws an Error with a
   // human-readable message that is suitable for showing to the user.
   // npmDependencies may be falsey or empty.
@@ -50,7 +46,7 @@ _.extend(exports, {
       // don't want anything too vague. For now, we support semvers and github
       // tarballs pointing at an exact commit.
       // if (!semver.valid(version) && !self._isGitHubTarball(version))
-      if (!semver.valid(version) && !self._isValidURI(version))
+      if (!semver.valid(version) && !self._isGitHubTarball(version))
         throw new Error(
           "Must declare exact version of npm package dependency: " + name + '@' + version);
     });
