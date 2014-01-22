@@ -32,7 +32,11 @@ _.extend(exports, {
   _tmpDirs: [],
 
   _isGitHubTarball: function (x) {
-    return /^https:\/\/github.com\/.*\/tarball\/[0-9a-f]{40}/.test(x);
+    return /^https:\/\/github(\..*)?.com\/.*\/tarball\/[0-9a-f]{40}/.test(x);
+  },
+
+  _isValidURI: function (x) {
+    return /^(http|https):\/\/.*/.test(x);
   },
 
   // If there is a version that isn't exact, throws an Error with a
@@ -45,7 +49,8 @@ _.extend(exports, {
       // .npm/npm-shrinkwrap.json) to pin down its dependencies precisely, so we
       // don't want anything too vague. For now, we support semvers and github
       // tarballs pointing at an exact commit.
-      if (!semver.valid(version) && !self._isGitHubTarball(version))
+      // if (!semver.valid(version) && !self._isGitHubTarball(version))
+      if (!semver.valid(version) && !self._isValidURI(version))
         throw new Error(
           "Must declare exact version of npm package dependency: " + name + '@' + version);
     });
